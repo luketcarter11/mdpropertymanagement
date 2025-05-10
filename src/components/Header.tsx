@@ -13,12 +13,12 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-white shadow-md">
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 py-2 md:py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="w-1/4">
+          <div className="md:w-1/4 flex justify-center md:justify-start w-full">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="relative w-48 h-16">
+              <div className="relative w-36 md:w-48 h-12 md:h-16">
                 <Image
                   src="/images/MD_Property_Management_logo.png"
                   alt="MD Property Management Logo"
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden"
+            className="md:hidden absolute right-4"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg
