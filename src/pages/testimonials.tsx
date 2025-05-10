@@ -1,66 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-interface BarkReview {
-  author: string;
-  rating: number;
-  content: string;
-  date: string;
-}
-
 const Testimonials: React.FC = () => {
-  const [barkReviews, setBarkReviews] = useState<BarkReview[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchBarkReviews = async () => {
-      try {
-        const response = await fetch('/api/reviews');
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch reviews');
-        }
-        const data = await response.json();
-        setBarkReviews(Array.isArray(data) ? data : []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load reviews');
-        console.error('Error fetching reviews:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBarkReviews();
-  }, []);
-
-  const featuredTestimonials = [
+  const testimonials = [
     {
       name: "Sarah Thompson",
       role: "Property Owner",
       company: "Residential Client",
       content: "MD Property Management has transformed how I maintain my rental properties. Their attention to detail and proactive approach has saved me countless hours and headaches. The team is always professional and responsive.",
-      rating: 5,
-      image: "/images/testimonials/sarah.jpg"
+      rating: 5
     },
     {
       name: "David Roberts",
       role: "Office Manager",
       company: "Commercial Client",
       content: "We've been using MD Property Management for our office cleaning and maintenance for over a year now. The consistency and quality of their service is outstanding. They've become an essential part of our business operations.",
-      rating: 5,
-      image: "/images/testimonials/david.jpg"
+      rating: 5
     },
     {
       name: "Emma Williams",
       role: "Business Owner",
       company: "Retail Space",
       content: "The level of service provided by MD Property Management is exceptional. Their team is reliable, thorough, and always goes the extra mile. They've helped maintain our retail space to the highest standards.",
-      rating: 5,
-      image: "/images/testimonials/emma.jpg"
+      rating: 5
     }
   ];
 
@@ -105,22 +70,18 @@ const Testimonials: React.FC = () => {
           </div>
         </section>
 
-        {/* Featured Testimonials */}
+        {/* Testimonials Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Featured Testimonials</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredTestimonials.map((testimonial, index) => (
+              {testimonials.map((testimonial, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center mb-6">
                     <div className="mr-4">
-                      <div className="w-16 h-16 bg-gray-200 rounded-full overflow-hidden">
-                        {/* Placeholder for profile image */}
-                        <div className="w-full h-full bg-blue-100 flex items-center justify-center">
-                          <svg className="h-8 w-8 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        </div>
+                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                        <svg className="h-8 w-8 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                       </div>
                     </div>
                     <div>
@@ -139,48 +100,8 @@ const Testimonials: React.FC = () => {
           </div>
         </section>
 
-        {/* Bark Reviews Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <h2 className="text-3xl font-bold text-center">Reviews from Bark</h2>
-              <img src="/images/bark-logo.png" alt="Bark.com" className="h-8 ml-4" />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-              {isLoading ? (
-                <div className="col-span-3 text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800 mx-auto"></div>
-                  <p className="mt-4 text-gray-600">Loading reviews...</p>
-                </div>
-              ) : error ? (
-                <div className="col-span-3 text-center py-12">
-                  <p className="text-red-600">{error}</p>
-                </div>
-              ) : barkReviews.length === 0 ? (
-                <div className="col-span-3 text-center py-12">
-                  <p className="text-gray-600">No reviews available at the moment.</p>
-                </div>
-              ) : (
-                barkReviews.map((review, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-300">
-                    <div className="mb-4">
-                      {renderStars(review.rating)}
-                    </div>
-                    <p className="text-gray-600 italic mb-4">"{review.content}"</p>
-                    <div className="mt-4">
-                      <p className="font-semibold">{review.author}</p>
-                      <p className="text-gray-500 text-sm">{review.date}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
         {/* Stats Section */}
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
               <div>

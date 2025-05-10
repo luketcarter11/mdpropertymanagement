@@ -18,7 +18,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <div className="md:w-1/4 flex justify-center md:justify-start w-full">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="relative w-36 md:w-48 h-12 md:h-16">
+              <div className="relative w-36 md:w-40 h-12 md:h-14">
                 <Image
                   src="/images/MD_Property_Management_logo.png"
                   alt="MD Property Management Logo"
